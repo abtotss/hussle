@@ -1,0 +1,85 @@
+/hussle
+│
+├── app/
+│   ├── Console/
+│   │   └── Kernel.php
+│   ├── Exceptions/
+│   │   └── Handler.php
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Controller.php
+│   │   │   ├── Auth/
+│   │   │   │   ├── LoginController.php
+│   │   │   │   ├── RegisterController.php
+│   │   │   │   └── ...
+│   │   │   └── Admin/
+│   │   │       ├── DashboardController.php
+│   │   │       └── ...
+│   │   ├── Middleware/
+│   │   │   ├── AdminMiddleware.php
+│   │   │   ├── Authenticate.php
+│   │   │   ├── RedirectIfAuthenticated.php
+│   │   │   └── VerifyCsrfToken.php
+│   │   └── Kernel.php   👈 Important — must exist!
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Category.php
+│   │   └── Product.php
+│   └── Providers/
+│       ├── AppServiceProvider.php
+│       ├── RouteServiceProvider.php
+│       └── ...
+│
+├── bootstrap/
+│   └── app.php
+│
+├── config/
+│   ├── app.php
+│   ├── auth.php
+│   ├── database.php
+│   └── ...
+│
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   │   ├── 2025_10_28_050422_create_categories_table.php
+│   │   ├── 2025_10_29_000000_create_products_table.php
+│   │   └── 2025_10_29_001000_create_category_product_table.php
+│   └── seeders/
+│
+├── public/
+│   ├── index.php
+│   └── ...
+│
+├── resources/
+│   ├── css/
+│   ├── js/
+│   ├── views/
+│   │   ├── welcome.blade.php
+│   │   ├── layouts/
+│   │   │   └── app.blade.php
+│   │   ├── auth/
+│   │   │   ├── login.blade.php
+│   │   │   ├── register.blade.php
+│   │   │   └── ...
+│   │   └── admin/
+│   │       └── dashboard.blade.php
+│   └── components/
+│
+├── routes/
+│   ├── web.php
+│   ├── api.php
+│   ├── console.php
+│   └── channels.php
+│
+├── storage/
+│   ├── app/
+│   ├── framework/
+│   └── logs/
+│
+├── tests/
+│
+├── artisan
+├── composer.json
+└── package.json
+
