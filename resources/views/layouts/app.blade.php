@@ -27,9 +27,15 @@
                 </header>
             @endisset
 
+           
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                {{-- Support both component usage ($slot) and traditional section/yield --}}
+                @isset($slot)
+                    {{ $slot }}
+                @else
+                    @yield('content')
+                @endisset
             </main>
         </div>
     </body>
