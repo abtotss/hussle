@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 // Public product and category routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
