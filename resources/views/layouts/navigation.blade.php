@@ -23,11 +23,11 @@
                         {{ __('Products') }}
                     </x-nav-link>
 
-                    <x-nav-link href="#">
+                    <x-nav-link href="/about">
                         {{ __('About') }}
                     </x-nav-link>
 
-                    <x-nav-link href="#">
+                    <x-nav-link href="/contact">
                         {{ __('Contact') }}
                     </x-nav-link>
                 </div>

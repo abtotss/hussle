@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* General Design Refresh and Modern Practices */
+
+/* Smooth transition for dark mode */
+.dark-mode-transition * {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+/* Modern Button Styles (Tailwind already handles most, but for consistency) */
+.btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.02];
+}
+
+.btn-blue {
+    @apply btn-primary text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800;
+}
+
+.btn-secondary {
+    @apply btn-primary text-blue-600 bg-white border-2 border-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:bg-gray-800 dark:border-blue-400 dark:hover:bg-gray-700;
+}
+
+/* Ensure the body background respects the dark mode transition */
+.dark body {
+    background-color: #111827; /* dark:bg-gray-900 */
+}
