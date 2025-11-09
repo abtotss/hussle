@@ -20,6 +20,7 @@ Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Public product and category routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
