@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -17,10 +18,10 @@ Route::get('/', function () {
 
 // Public static pages
 Route::view('/about', 'about')->name('about');
+
+// Contact routes
 Route::view('/contact', 'contact')->name('contact');
-Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
-Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Public product and category routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -34,12 +35,23 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin routes
-Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/', fn() => redirect()->route('admin.products.index'))->name('dashboard');
-    Route::resource('products', ProductController::class);
-    Route::resource('categories', CategoryController::class);
-});
+
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['web', 'auth', 'admin'])
+    ->group(function () {
+        // Admin dashboard
+        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+
+        // Resource controllers for admin-managed models
+        Route::resource('products', AdminProductController::class);
+        Route::resource('categories', AdminCategoryController::class);
+    });
+
+
+ Route::fallback(function () {
+     return response()->view('errors.404', [], 404);
+ });
 
 
 Route::middleware('auth')->group(function () {

@@ -4,20 +4,19 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create()
     {
         return view('auth.register');
     }
@@ -25,26 +24,56 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * Behavior:
+     * - If the current user is an admin, they can create a user and set the role.
+     *   Admin-creator is NOT logged out and we do NOT log in as the newly created user.
+     * - If the request comes from guest (public registration), we create a 'user' and log them in.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->validate([
+        // Base validation rules for all registrations
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ];
+
+        // If current user is admin, allow optional role field (checked later)
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            $rules['role'] = ['nullable', 'string', 'in:user,admin'];
+        }
+
+        $validated = $request->validate($rules);
+
+        // Determine role to assign:
+        $roleToAssign = 'user'; // default
+
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            // Admin may set role, but default to 'user' if nothing provided
+            $roleToAssign = $validated['role'] ?? 'user';
+        } else {
+            // Public registration always becomes 'user'
+            $roleToAssign = 'user';
+        }
+
+        // Create the user
+        $newUser = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $roleToAssign,
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        event(new Registered($newUser));
 
-        event(new Registered($user));
+        // If the creator is an admin, do NOT log in as the created user.
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return redirect()->back()->with('success', "User '{$newUser->email}' created with role '{$newUser->role}'.");
+        }
 
-        Auth::login($user);
+        // Otherwise, log the newly registered user in and redirect to home/dashboard
+        Auth::login($newUser);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }
