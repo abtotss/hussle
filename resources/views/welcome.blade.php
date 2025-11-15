@@ -16,8 +16,8 @@
     <header class="pt-20 pb-32 bg-gray-50 dark:bg-gray-800 transition-colors duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-6xl font-extrabold text-gray-900 dark:text-white sm:text-7xl lg:text-8xl leading-tight tracking-tight">
-                <span class="block">Power Your</span>
-                <span class="block text-blue-600 dark:text-blue-400">Hustle</span>
+                <span class="block">Welcome to HussleTools</span>
+                <span class="block text-blue-600 dark:text-blue-400">Empowering Your Hustle</span>
             </h1>
             <p class="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto">
                 The curated marketplace for software licenses, templates, and digital assets. Get instant access to the tools you need to build, grow, and succeed.
