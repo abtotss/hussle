@@ -35,19 +35,17 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin routes
-
 Route::middleware(['auth', AdminMiddleware::class])
      ->prefix('admin')
      ->name('admin.')
      ->group(function () {
-         Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+         // Name this 'dashboard' so the group's 'admin.' prefix yields 'admin.dashboard'
+         Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-
-        // Resource controllers for admin-managed models
-        Route::resource('products', AdminProductController::class);
-        Route::resource('categories', AdminCategoryController::class);
-    });
-
+         // Resource controllers for admin-managed models
+         Route::resource('products', AdminProductController::class);
+         Route::resource('categories', AdminCategoryController::class);
+     });
 
  Route::fallback(function () {
      return response()->view('errors.404', [], 404);
