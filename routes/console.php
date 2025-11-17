@@ -1,8 +1,18 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+/*
+|--------------------------------------------------------------------------
+| Console Routes
+|--------------------------------------------------------------------------
+|
+| Here you may define all of your Closure-based console commands.
+| These commands are only accessible via the CLI.
+|
+*/
+
+Artisan::command('hello', function () {
+    $this->info('Console routes are working!');
+});

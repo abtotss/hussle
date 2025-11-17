@@ -36,12 +36,12 @@ Route::middleware(['auth'])->group(function () {
 
 // Admin routes
 
-Route::prefix('admin')
-    ->name('admin.')
-    ->middleware(['web', 'auth', 'admin'])
-    ->group(function () {
-        // Admin dashboard
-        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', AdminMiddleware::class])
+     ->prefix('admin')
+     ->name('admin.')
+     ->group(function () {
+         Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+
 
         // Resource controllers for admin-managed models
         Route::resource('products', AdminProductController::class);
