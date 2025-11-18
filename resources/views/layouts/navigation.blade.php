@@ -14,8 +14,7 @@
                 <!-- Navigation Links (Desktop) -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <!-- Home link always visible -->
-                    <x-nav-link :href="Route::has('home') ? route('home') : url('/')" 
-                        :active="request()->routeIs('home')">
+                    <x-nav-link :href="Route::has('home') ? route('home') : url('/')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
 
@@ -23,11 +22,11 @@
                         {{ __('Products') }}
                     </x-nav-link>
 
-                    <x-nav-link href="/about">
+                    <x-nav-link href="{{ route('about') ?? url('/about') }}">
                         {{ __('About') }}
                     </x-nav-link>
 
-                    <x-nav-link href="/contact">
+                    <x-nav-link href="{{ route('contact') ?? url('/contact') }}">
                         {{ __('Contact') }}
                     </x-nav-link>
                 </div>
@@ -36,7 +35,7 @@
             <!-- Auth Links (Desktop) -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
-                    @if(Auth::user()->is_admin)
+                    @if(auth()->check() && auth()->user()->role === 'admin')
                         <x-nav-link :href="route('admin.dashboard')" class="text-red-500 hover:text-red-700">
                             {{ __('Admin Panel') }}
                         </x-nav-link>
@@ -111,7 +110,7 @@
                 {{ __('Products') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('login')">
+            <x-responsive-nav-link href="#">
                 {{ __('How It Works') }}
             </x-responsive-nav-link>
 
@@ -124,7 +123,7 @@
             </x-responsive-nav-link>
 
             @auth
-                @if(Auth::user()->is_admin)
+                @if(auth()->check() && auth()->user()->role === 'admin')
                     <x-responsive-nav-link :href="route('admin.dashboard')" class="text-red-500 hover:text-red-700">
                         {{ __('Admin Panel') }}
                     </x-responsive-nav-link>
