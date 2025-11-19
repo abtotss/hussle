@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class SettingUpdateRequest extends FormRequest
 {
@@ -11,7 +12,8 @@ class SettingUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // Assuming only admin users can update settings
+        return Auth::check() && Auth::user()->is_admin;
     }
 
     /**
@@ -22,7 +24,14 @@ class SettingUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'site_name' => ['required', 'string', 'max:255'],
+            'site_email' => ['required', 'email', 'max:255'],
+            'site_phone' => ['nullable', 'string', 'max:255'],
+            'social_facebook' => ['nullable', 'url', 'max:255'],
+            'social_twitter' => ['nullable', 'url', 'max:255'],
+            'social_instagram' => ['nullable', 'url', 'max:255'],
+            'products_per_page' => ['required', 'integer', 'min:1', 'max:100'],
+            'maintenance_mode' => ['nullable', 'string', 'in:on,off'],
         ];
     }
 }

@@ -10,6 +10,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\SettingController; 
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -45,6 +47,15 @@ Route::middleware(['auth', AdminMiddleware::class])
          // Resource controllers for admin-managed models
          Route::resource('products', AdminProductController::class);
          Route::resource('categories', AdminCategoryController::class);
+         Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update', 'destroy']);
+
+
+         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+         Route::put('settings', [SettingController::class, 'bulkUpdate'])->name('settings.bulk-update');
+         Route::get('settings/create', [SettingController::class, 'create'])->name('settings.create');
+         Route::post('settings', [SettingController::class, 'store'])->name('settings.store');
+         Route::get('settings/{setting}/edit', [SettingController::class, 'edit'])->name('settings.edit');Route::put('settings/{setting}', [SettingController::class, 'update'])->name('settings.update');
+         Route::delete('settings/{setting}', [SettingController::class, 'destroy'])->name('settings.destroy');
      });
 
  Route::fallback(function () {
