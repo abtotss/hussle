@@ -10,8 +10,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\Admin\SettingController; 
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,6 +31,13 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
+
+// Shopping Cart routes // <-- NEW SECTION
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 // User dashboard
 Route::middleware(['auth'])->group(function () {

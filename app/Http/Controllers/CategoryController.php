@@ -9,18 +9,22 @@ class CategoryController extends Controller
     // GET /categories
     public function index()
     {
-        // withCount avoids calling products()->count() in loop (N+1)
-        $categories = Category::withCount('products')->orderBy('name')->get();
+        // Get all categories with product count
+        $categories = Category::withCount('products')
+            ->orderBy('name')
+            ->get();
 
         return view('categories.index', compact('categories'));
     }
 
-    // GET /categories/{category:slug}
+    /**
+     * Display the specified category and its products.
+     */
     public function show(Category $category)
     {
-        // eager-load paginated products to avoid huge payloads
-        $products = $category->products()->select('products.*')->paginate(12);
+        // Get paginated products for this category
+        $products = $category->products()->paginate(12);
 
-        return view('categories.show', compact('category','products'));
+        return view('categories.show', compact('category', 'products'));
     }
 }
